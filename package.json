@@ -1,0 +1,20 @@
+{
+  "name": "notes",
+  "version": "1.0.0",
+  "scripts": {
+    "build:ui": "rm -rf dist && cd frontend && npm run build && cp -r dist ../backend",
+    "deploy": "npm run build:ui && git add . && git commit -m build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CiroMirkin/notes_backendPractice.git"
+  },
+  "keywords": [],
+  "author": "CiroMirkin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CiroMirkin/notes_backendPractice/issues"
+  },
+  "homepage": "https://github.com/CiroMirkin/notes_backendPractice#readme",
+  "description": ""
+}
