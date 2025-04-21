@@ -1,7 +1,9 @@
-# Notes App For Backend Practice
+# Notes App - Backend Practice Project
 
 
 ## Dev
+
+> Create the `.env` file and fill in the data according to the `example.env` file.
 
 Run at the same time:
 

@@ -1,10 +1,8 @@
 const express = require('express')
 const cors = require('cors')
+require('dotenv').config()
 
-const { deleteThisNote } = require('../domain/deleteNote')
-
-const { notesInFile } = require('./notes')
-let notes = [...notesInFile]
+const Note = require('./models/note')
 
 const app = express()
 app.use(cors())
@@ -14,14 +12,16 @@ app.use(express.static('dist'))
 // GET
 
 app.get('/api/notes', (request, response) => {
-  response.json(notes)
+  Note.find({}).then(notes => {
+    response.json(notes)
+  })
 })
 
 app.get('/api/notes/:id', (request, response) => {
   const id = request.params.id
-  const note = notes.find(note => note.id === id)
-  
-  note ? response.json(note) : response.status(404).end()
+  Note.findById(id).then(note => {
+    response.json(note)
+  })
 })
 
 // POST
@@ -43,23 +43,27 @@ app.post('/api/notes', (request, response) => {
     })
   }
 
-  const note = {
+  const newNote = new Note({
     content: body.content,
-    id: generateId(),
-  }
+  })
 
-  notes = notes.concat(note)
+  newNote.save().then(savedNote => {
+    response.json(savedNote)
+  })
 
-  response.json(note)
 })
 
 // DELETE
 
 app.delete('/api/notes/:id', (request, response) => {
   const id = request.params.id
-  notes = deleteThisNote({ id, notes })
-
-  response.status(204).end()
+  Note.findByIdAndDelete(id).then(deletedNote => {
+    if (deletedNote) {
+      response.status(204).end()
+    } else {
+      response.status(404).json({ error: 'Nota no encontrada' })
+    }
+  })
 })
 
 const PORT = process.env.PORT || 3001
