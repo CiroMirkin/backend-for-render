@@ -14,9 +14,13 @@ mongoose.connect(url)
 
 
 const noteSchema = new mongoose.Schema({
-  content: String,
-  important: Boolean,
+  content: {
+    type: String,
+    minLength: 4,
+    required: true
+  }
 })
+
 // Database Response Formatting
 noteSchema.set('toJSON', {
   transform: (document, returnedObject) => {
@@ -25,6 +29,5 @@ noteSchema.set('toJSON', {
     delete returnedObject.__v
   }
 })
-
 
 module.exports = mongoose.model('Note', noteSchema)
