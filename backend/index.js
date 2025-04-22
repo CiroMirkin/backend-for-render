@@ -6,7 +6,6 @@ const Note = require('./models/note')
 
 const app = express()
 app.use(cors())
-app.use(express.json())
 app.use(express.static('dist'))
 
 // GET
@@ -17,12 +16,14 @@ app.get('/api/notes', (request, response) => {
   })
 })
 
-app.get('/api/notes/:id', (request, response) => {
+app.get('/api/notes/:id', (request, response, next) => {
   const id = request.params.id
   Note.findById(id).then(note => {
-    response.json(note)
+    note ? response.json(note) : response.status(404).end()
   })
+  .catch(error => next(error))
 })
+app.use(express.json())
 
 // POST
 
@@ -53,18 +54,38 @@ app.post('/api/notes', (request, response) => {
 
 })
 
+// UPDATE
+
+app.put('/api/notes/:id', (request, response, next) => {
+  const body = request.body
+
+  const note = {
+    content: body.content,
+  }
+
+  Note.findByIdAndUpdate(request.params.id, note, { new: true })
+    .then(updatedNote => {
+      response.json(updatedNote)
+    })
+    .catch(error => next(error))
+})
+
 // DELETE
 
 app.delete('/api/notes/:id', (request, response) => {
   const id = request.params.id
   Note.findByIdAndDelete(id).then(deletedNote => {
-    if (deletedNote) {
-      response.status(204).end()
-    } else {
-      response.status(404).json({ error: 'Nota no encontrada' })
-    }
-  })
+    response.status(204).end()
+  }).catch(error => next(error))
 })
+
+// Unknown endpoint request handler
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+app.use(unknownEndpoint)
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
