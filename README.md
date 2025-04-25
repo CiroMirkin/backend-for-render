@@ -19,6 +19,12 @@ In *backend* folder:
 npm run start
 ```
 
+For run backend test:
+```bash
+cd backend
+npm run test
+```
+
 ---
 
 [From Fullstackopen](https://fullstackopen.com/en/)
