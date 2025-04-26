@@ -7,25 +7,27 @@ notesRouter.get('/', async (request, response) => {
   response.json(notes)
 })
 
-notesRouter.get('/:id', (request, response, next) => {
+notesRouter.get('/:id', async (request, response, next) => {
   const id = request.params.id
-  Note.findById(id).then(note => {
+  try {
+    const note = await Note.findById(id)
     note ? response.json(note) : response.status(404).end()
-  })
-  .catch(error => next(error))
+  }
+  catch (e) { next(e) }
 })
 
 // POST
-notesRouter.post('/', (request, response, next) => {
+notesRouter.post('/', async (request, response, next) => {
   const body = request.body
-
   const newNote = new Note({
     content: body.content,
   })
-
-  newNote.save().then(savedNote => {
-    response.json(savedNote)
-  }).catch(error => next(error))
+  
+  try {
+    const savedNote = await newNote.save()
+    response.status(201).json(savedNote) // 201 is the http created code
+  }
+  catch(error) { next(error) }
 })
 
 // UPDATE
@@ -43,11 +45,13 @@ notesRouter.put('/:id', (request, response, next) => {
 })
 
 // DELETE
-notesRouter.delete('/:id', (request, response, next) => {
+notesRouter.delete('/:id', async (request, response, next) => {
   const id = request.params.id
-  Note.findByIdAndDelete(id).then(deletedNote => {
+  try {
+    await Note.findByIdAndDelete(id)
     response.status(204).end()
-  }).catch(error => next(error))
+  }
+  catch (e) { next(e) }
 })
 
 module.exports = notesRouter
