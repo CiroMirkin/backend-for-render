@@ -7,7 +7,8 @@ const app = require("../app")
 const api = supertest(app)
 
 const Note = require("../models/note")
-const { initialNotes, getNotesFromDB, getNonExistingId } = require("./test_helper")
+const { getNonExistingId } = require("./test_helper")
+const { initialNotes, getNotesFromDB } = require("./note_api_test_helper")
 
 beforeEach(async () => {
   await Note.deleteMany({})
@@ -70,6 +71,7 @@ describe('Create a new note.', () => {
   test("A valid note can be created.", async () => {
     const newNote = {
       content: "coffee",
+      userId: getNonExistingId()
     }
     
     await api
