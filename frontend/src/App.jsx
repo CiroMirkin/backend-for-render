@@ -15,6 +15,16 @@ function App() {
   const [ user, setUser ] = useState(null)
 
   useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      noteService.setToken(user.token)
+    }
+    console.log('iwi')
+  }, [])
+
+  useEffect(() => {
     noteService.getAllNotes().then((initialNotes) => {
       setNotes(initialNotes)
     })
@@ -58,6 +68,15 @@ function App() {
           </div>
         }
       </UserProvider>
+      { 
+        user != null && 
+          <button 
+            onClick={() => { 
+              setUser(null); 
+              window.localStorage.removeItem('loggedNoteappUser')
+            }}
+          >Sing out</button>
+      }
     </>
   )
 }
