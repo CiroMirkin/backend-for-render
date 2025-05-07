@@ -3,7 +3,21 @@
 
 ## Backend paths
 
-The api paths are in `backend/controllers` folder.
+The api paths are in `backend/controllers` folder and they are in `frontend/services` folder as well.
+
+* Notes
+    * GET `api/notes/`
+    * GET `api/notes/:id`
+    * POST `api/notes/`
+    * DELETE `api/notes/:id`
+    * PUT `api/notes/:id`
+
+* Users
+    * POST `/api/users/`
+    * GET `/api/users/`
+
+* Login
+    * POST `/api/login`
 
 ## Dev
 
