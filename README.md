@@ -1,6 +1,10 @@
 # Notes App - Backend Practice Project
 
 
+## Backend paths
+
+The api paths are in `backend/controllers` folder.
+
 ## Dev
 
 > Create the `.env` file and fill in the data according to the `example.env` file.

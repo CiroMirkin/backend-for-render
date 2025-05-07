@@ -26,8 +26,7 @@ function LoginForm() {
           setPassword('')
         } 
         catch (exception) {
-          console.error('Possibly wrong credentials')
-          console.error(exception)
+          console.error('Possibly wrong credentials ', exception)
         }
     }
 

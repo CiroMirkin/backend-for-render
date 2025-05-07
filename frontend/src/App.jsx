@@ -6,6 +6,7 @@ import AddNoteForm from './components/AddNoteForm'
 import { deleteThisNote } from '../../domain/deleteNote'
 import LoginForm from './components/LoginForm'
 import UserProvider from './userProvider'
+import SignupForm from './components/SignupForm'
 
 function App() {
   const [notes, setNotes] = useState([])
@@ -21,7 +22,6 @@ function App() {
       setUser(user)
       noteService.setToken(user.token)
     }
-    console.log('iwi')
   }, [])
 
   useEffect(() => {
@@ -60,6 +60,7 @@ function App() {
         { user == null 
           ? <div>
             <LoginForm />
+            <SignupForm />
             <Notelist notes={notes} deleteNote={ deleteNote }/>
           </div> 
           : <div>
